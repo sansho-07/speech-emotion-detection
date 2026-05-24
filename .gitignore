@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# macOS
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
+
+# Outputs and artifacts
+outputs/
+*.keras
+models/
+
+# Logs
+.log
+
+# Byte-compiled / optimized / DLL files
+*.egg-info/
+dist/
+build/
