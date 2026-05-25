@@ -1,0 +1,10 @@
+# Ignore local artifacts and deployment-irrelevant files for Hugging Face Spaces
+venv/
+env/
+.venv/
+__pycache__/
+*.py[cod]
+.DS_Store
+outputs/
+*.ipynb
+.git/

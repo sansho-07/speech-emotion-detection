@@ -1,4 +1,15 @@
+---
+title: Speech Emotion Recognition
+emoji: 🎤
+colorFrom: blue
+colorTo: purple
+sdk: docker
+pinned: false
+---
+
 # Speech Emotion Recognition
+
+[![Hugging Face Spaces](https://img.shields.io/badge/Hugging%20Face-Spaces-orange?logo=huggingface)](https://huggingface.co/spaces/new)
 
 A simple speech emotion recognition project that predicts the emotional state of a speaker from a WAV audio file.
 
@@ -37,9 +48,8 @@ The model predicts one of these emotions:
 ## Requirements
 
 This project is tested with:
-- Python 3.11
-- `tensorflow-macos==2.16.2`
-- `tensorflow-metal==1.2.0`
+- Python 3.10+ or 3.11
+- `tensorflow==2.16.2`
 - `streamlit==1.57.0`
 - `librosa==0.11.0`
 - `numpy==1.26.4`
@@ -47,7 +57,7 @@ This project is tested with:
 - `scikit-learn==1.8.0`
 - `soundfile==0.13.1`
 
-> Note: The project is configured for macOS and Apple Silicon, but the code can work on other platforms if compatible TensorFlow builds are available.
+> Note: For Hugging Face Spaces and Linux deployment, use `tensorflow==2.16.2`. Mac-specific packages like `tensorflow-macos` and `tensorflow-metal` are not required for Spaces.
 
 ## Setup
 
@@ -74,6 +84,51 @@ streamlit run app/app.py
 ```
 
 Then open the URL shown by Streamlit in your browser.
+
+## Deploy to Hugging Face Spaces
+
+This repository supports two deployment options.
+
+### Option 1: Native Streamlit Space
+
+1. Create a new Hugging Face Space.
+2. Choose `Streamlit` as the SDK.
+3. Push this repository to the Space.
+4. Ensure `requirements.txt`, `app.py`, and `models/final_industry_ser_model.keras` are included.
+
+Hugging Face should detect the root `app.py` wrapper and run the Streamlit app automatically.
+
+### Option 2: Docker Space
+
+1. Create a new Hugging Face Space.
+2. Choose `Docker` as the SDK.
+3. Push this repository to the Space.
+
+The provided `Dockerfile` installs `ffmpeg` and runs Streamlit on port `7860`, so no further Docker configuration is required.
+
+### Deploy-ready commands
+
+Use this sequence to push the repository and deploy it on Hugging Face Spaces:
+
+```bash
+git add .
+git commit -m "Deploy Speech Emotion Recognition to Hugging Face Spaces"
+git push origin main
+```
+
+Then create a new Hugging Face Space and choose one of these options:
+
+- `Streamlit` SDK: the root `app.py` wrapper will be detected automatically
+- `Docker` SDK: the existing `Dockerfile` installs `ffmpeg` and runs the app on port `7860`
+
+If you want to build locally first, make sure Docker Desktop is running and then use:
+
+```bash
+docker build -t ser-app .
+docker run -p 7860:7860 ser-app
+```
+
+If the Docker daemon is not running, the build will fail with a socket connection error.
 
 ## How to use the app
 

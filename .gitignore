@@ -17,8 +17,6 @@ env/
 
 # Outputs and artifacts
 outputs/
-*.keras
-models/
 
 # Logs
 .log
