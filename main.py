@@ -18,7 +18,7 @@ def main():
     print("-" * 50)
     
     # Initialize predictor
-    predictor = EmotionPredictor(model_path='models/final_industry_ser_model.h5')
+    predictor = EmotionPredictor(model_path='models/final_industry_ser_model.keras')
     
     # Get audio files from dataset
     audio_files = get_audio_files('dataset')
@@ -41,11 +41,7 @@ def main():
         
         print(f"  MFCC shape: {mfcc.shape}")
         print(f"  Mel-spectrogram shape: {mel_spec.shape}")
-        
-        # Predict emotion
-        # prediction = predictor.predict(features)
-        # emotion = predictor.get_emotion_label(prediction)
-        # print(f"  Predicted emotion: {emotion}")
+       
 
 if __name__ == "__main__":
     main()
