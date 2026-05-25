@@ -12,10 +12,9 @@ from src.feature_extraction import extract_features
 # =========================
 # LOAD MODEL
 # =========================
+MODEL_PATH = "models/final_industry_ser_model.keras"
 
-model = tf.keras.models.load_model(
-   "models/final_industry_ser_model.keras"
-)
+model = tf.keras.models.load_model(MODEL_PATH)
 
 # =========================
 # LABEL ENCODER
