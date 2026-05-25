@@ -39,26 +39,32 @@ label_encoder.fit(emotion_labels)
 
 def predict_emotion(audio_path):
 
-    # Preprocess audio
-    audio, sr = preprocess_audio(audio_path)
+    try:
 
-    # Extract MFCC
-    features = extract_features(audio, sr)
+        # Preprocess audio
+        audio, sr = preprocess_audio(audio_path)
 
-    # Reshape for CNN
-    features = np.array(features)
+        # Extract features
+        features = extract_features(audio, sr)
 
-    features = features[np.newaxis, :, np.newaxis, np.newaxis]
+        # Reshape
+        features = np.array(features)
 
-    # Predict
-    prediction = model.predict(features)
+        features = features[np.newaxis, :, np.newaxis, np.newaxis]
 
-    predicted_class = np.argmax(prediction)
+        # Prediction
+        prediction = model.predict(features)
 
-    predicted_emotion = label_encoder.inverse_transform(
-        [predicted_class]
-    )[0]
+        predicted_class = np.argmax(prediction)
 
-    confidence = np.max(prediction)
+        emotion = label_encoder.inverse_transform(
+            [predicted_class]
+        )[0]
 
-    return predicted_emotion, confidence
+        confidence = np.max(prediction)
+
+        return emotion, confidence
+
+    except Exception as e:
+
+        return f"Error: {str(e)}", 0

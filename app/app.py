@@ -1,19 +1,16 @@
-import sys
-import os
-
-# Add project root to Python path
-sys.path.append(
-    os.path.abspath(
-        os.path.join(os.path.dirname(__file__), '..')
-    )
-)
-
 # =========================
 # IMPORT LIBRARIES
 # =========================
 
 import streamlit as st
 import os
+import sys
+from pathlib import Path
+
+# Ensure the repository root is on Python path so `src` imports work from Streamlit.
+ROOT_DIR = Path(__file__).resolve().parents[1]
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
 
 from src.prediction import predict_emotion
 
@@ -23,6 +20,7 @@ from src.prediction import predict_emotion
 
 st.set_page_config(
     page_title="Speech Emotion Recognition",
+    page_icon="🎤",
     layout="centered"
 )
 
@@ -30,18 +28,35 @@ st.set_page_config(
 # TITLE
 # =========================
 
-st.title("🎤 Speech Emotion Recognition")
+st.title("🎤 Speech Emotion Recognition AI")
 
-st.write(
-    "Upload a speech audio file to detect emotion."
-)
+st.markdown("""
+This AI system predicts human emotions from speech audio using:
+- Deep Learning
+- CNN Architecture
+- MFCC Audio Features
+""")
 
 # =========================
-# FILE UPLOAD
+# SIDEBAR
+# =========================
+
+st.sidebar.header("About Project")
+
+st.sidebar.info("""
+Developed using:
+- TensorFlow
+- Librosa
+- Streamlit
+- Deep Learning
+""")
+
+# =========================
+# FILE UPLOADER
 # =========================
 
 uploaded_file = st.file_uploader(
-    "Upload WAV File",
+    "Upload WAV Audio File",
     type=["wav"]
 )
 
@@ -57,15 +72,25 @@ if uploaded_file is not None:
 
         f.write(uploaded_file.read())
 
+    # Audio Player
     st.audio(temp_path)
 
-    # Predict emotion
-    emotion, confidence = predict_emotion(temp_path)
+    # Predict Button
+    if st.button("Predict Emotion"):
 
-    # Display results
-    st.success(f"Predicted Emotion: {emotion}")
+        with st.spinner("Analyzing Emotion..."):
 
-    st.info(f"Confidence: {confidence:.2f}")
+            emotion, confidence = predict_emotion(
+                temp_path
+            )
 
-    # Remove temp file
+        st.success(
+            f"Predicted Emotion: {emotion}"
+        )
+
+        st.info(
+            f"Confidence Score: {confidence:.2f}"
+        )
+
+    # Cleanup
     os.remove(temp_path)
